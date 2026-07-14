@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clinical history tool for orthopaedic physical examinations, 骨傷科檢查病歷工具</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --color-bg: #f7f6f2; --color-surface: #f9f8f5; --color-surface-2: #fbfbf9; --color-surface-offset: #edeae5; --color-divider: #dcd9d5;
+      --color-text: #28251d; --color-text-muted: #6f6b64; --color-primary: #01696f; --color-primary-hover: #0c4e54; --color-primary-highlight: #cedcd8; --color-success: #437a22; --color-error: #a12c7b;
+      --radius-sm: .375rem; --radius-md: .5rem; --radius-lg: .75rem; --radius-xl: 1rem; --shadow-sm: 0 1px 2px rgba(40,37,29,.06);
+      --font-body: 'General Sans', 'Inter', sans-serif; --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    [data-theme="dark"] {
+      --color-bg: #171614; --color-surface: #1c1b19; --color-surface-2: #201f1d; --color-surface-offset: #252320; --color-divider: #2c2a27;
+      --color-text: #ece9e2; --color-text-muted: #b4b0a8; --color-primary: #4f98a3; --color-primary-hover: #68adb7; --color-primary-highlight: #243538; --color-success: #85bf63; --color-error: #db73b5;
+    }
+    *,*::before,*::after{box-sizing:border-box} html{-webkit-text-size-adjust:none;text-size-adjust:none} body{margin:0;min-height:100dvh;font-family:var(--font-body);font-size:var(--text-base);line-height:1.5;background:var(--color-bg);color:var(--color-text)}
+    button,input,textarea{font:inherit;color:inherit} button{cursor:pointer} summary{cursor:pointer;list-style:none} summary::-webkit-details-marker{display:none}
+    .skip-link{position:absolute;left:1rem;top:-40px;background:var(--color-primary);color:#fff;padding:.5rem .75rem;border-radius:var(--radius-sm)} .skip-link:focus{top:1rem}
+    .app{max-width:1600px;margin:0 auto;padding:1rem;display:grid;gap:1rem}.panel{background:var(--color-surface);border:1px solid rgba(40,37,29,.12);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm)}
+    .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding:1.25rem}.brand{display:grid;gap:.4rem}.brand-row{display:flex;gap:.75rem;align-items:center}.logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--color-primary-highlight),var(--color-surface-offset));display:grid;place-items:center;color:var(--color-primary)}
+    h1{margin:0;font-size:var(--text-xl);line-height:1.1}.sub{color:var(--color-text-muted);max-width:74ch}.caption{font-size:var(--text-sm);color:var(--color-text-muted)} .toolbar,.footer-actions,.pill-list,.output-tools,.summary-meta,.region-tools{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+    .pill{padding:.45rem .7rem;border-radius:999px;background:var(--color-surface-offset);font-size:var(--text-xs);color:var(--color-text-muted)}
+    .btn,.mini-btn,.segmented button{border:1px solid rgba(40,37,29,.12);background:var(--color-surface-2);padding:.75rem 1rem;border-radius:var(--radius-md);transition:all var(--transition)} .btn:hover,.mini-btn:hover,.segmented button:hover{border-color:var(--color-primary);transform:translateY(-1px)} .btn-primary{background:var(--color-primary);color:#fff;border-color:var(--color-primary)} .btn-primary:hover{background:var(--color-primary-hover)} .mini-btn{padding:.45rem .7rem;font-size:var(--text-xs);border-radius:999px}
+    .segmented{display:inline-flex;padding:4px;background:var(--color-surface-offset);border-radius:var(--radius-lg);border:1px solid rgba(40,37,29,.1)} .segmented button{background:transparent;border-color:transparent;padding:.55rem .85rem} .segmented button.active{background:var(--color-surface);border-color:rgba(40,37,29,.1)}
+    .layout{display:grid;grid-template-columns:1.5fr .9fr;gap:1rem}.panel-inner{padding:1.25rem}.regions-stack{display:grid;gap:.9rem}.region{background:var(--color-surface-2);border:1px solid rgba(40,37,29,.1);border-radius:var(--radius-lg);overflow:hidden}
+    .region summary{display:flex;justify-content:space-between;align-items:center;gap:.75rem;padding:1rem;background:var(--color-surface-offset)} .region[open] summary{border-bottom:1px solid var(--color-divider)} .summary-title{display:grid;gap:2px} .summary-title strong{font-size:var(--text-lg)} .hint,.count,.parse-status{font-size:var(--text-xs);color:var(--color-text-muted)} .chevron{transition:transform var(--transition)} .region[open] .chevron{transform:rotate(90deg)}
+    .region-body{padding:.85rem;display:grid;gap:.75rem}.test-card{padding:.85rem;border:1px solid rgba(40,37,29,.1);border-radius:var(--radius-md);background:var(--color-surface)} .test-title{display:grid;gap:2px;margin-bottom:.75rem}.test-title strong{font-size:var(--text-sm)} .test-title span{font-size:var(--text-xs);color:var(--color-text-muted)}
+    .row-stack{display:grid;gap:.6rem}.test-row{display:grid;grid-template-columns:140px 1fr;gap:.5rem;align-items:flex-start}.row-tag{display:flex;align-items:center;justify-content:center;min-height:44px;padding:.7rem .55rem;border-radius:var(--radius-md);border:1px solid rgba(40,37,29,.12);background:var(--color-surface-offset);font-size:var(--text-sm);font-weight:600;text-align:center}
+    .checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.5rem}.check input{position:absolute;opacity:0;pointer-events:none}.check label{display:flex;align-items:center;justify-content:center;min-height:44px;padding:.7rem .55rem;text-align:center;border-radius:var(--radius-md);border:1px solid rgba(40,37,29,.12);background:var(--color-surface-2);font-size:var(--text-sm);transition:all var(--transition)}
+    .check input:checked + label{border-color:var(--color-primary);background:var(--color-primary-highlight);color:var(--color-primary);font-weight:600}.check input[value*='pain']:checked + label,.check input[value='positive']:checked + label,.check input[value='hypo']:checked + label,.check input[value='hyper']:checked + label,.check input[value='lateral-tilt']:checked + label,.check input[value='medial-tilt']:checked + label,.check input[value*='convex']:checked + label{border-color:var(--color-error);background:color-mix(in srgb, var(--color-error) 14%, var(--color-surface));color:var(--color-error)}.check input[value='normal']:checked + label,.check input[value='negative']:checked + label,.check input[value='none']:checked + label{border-color:var(--color-success);background:color-mix(in srgb, var(--color-success) 14%, var(--color-surface));color:var(--color-success)}
+    .meta{display:grid;gap:.75rem;margin-bottom:1rem}.meta-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}.field{display:grid;gap:6px}.field label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-muted)}.field input{min-height:44px;padding:.8rem .9rem;border-radius:var(--radius-md);border:1px solid rgba(40,37,29,.12);background:var(--color-surface-2)}
+    textarea{width:100%;min-height:420px;resize:vertical;padding:1rem;border-radius:var(--radius-lg);border:1px solid rgba(40,37,29,.12);background:var(--color-surface-2);line-height:1.6}
+    .rom-wrap{display:flex;align-items:center;gap:.35rem;margin-top:.35rem}.rom-label{font-size:var(--text-sm);font-weight:600;color:var(--color-text-muted);white-space:nowrap}.rom-input{width:80px;padding:.35rem .5rem;border-radius:var(--radius-md);border:1px solid rgba(40,37,29,.2);background:var(--color-surface-2);font-size:var(--text-sm);color:var(--color-text);text-align:center}.rom-input:focus{outline:2px solid var(--color-primary);border-color:var(--color-primary)}.rom-input.has-value{border-color:var(--color-primary);background:var(--color-primary-highlight);color:var(--color-primary);font-weight:600} @media (max-width:1120px){.layout{grid-template-columns:1fr}} @media (max-width:720px){.topbar{flex-direction:column}.meta-row,.test-row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="app">
+    <header class="topbar panel">
+      <div class="brand">
+        <div class="brand-row">
+          <div class="logo" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5h8l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"></path><path d="M14 5v4h4"></path><path d="M8 13h8M8 17h5"></path></svg></div>
+          <div>
+            <h1>Clinical history tool for orthopaedic physical examinations, 骨傷科檢查病歷工具</h1>
+            <div class="caption">Created by Clinical Division, School of Chinese Medicine, HKBU. Internal use only.</div>
+            <div class="sub">Bilingual, collapsible, checkbox-based clinical examination shorthand builder with two-way editing between the exam library and output textbox.</div>
+          </div>
+        </div>
+        <div class="pill-list"><span class="pill">Neck</span><span class="pill">Shoulder</span><span class="pill">Elbow</span><span class="pill">Wrist</span><span class="pill">Lower Back</span><span class="pill">Hip + Gluteal</span><span class="pill">Knee</span><span class="pill">Ankle</span></div>
+      </div>
+      <div class="toolbar"><button class="btn" type="button" id="themeToggle">Dark mode</button><button class="btn" type="button" id="clearAll">Clear all</button></div>
+    </header>
+
+    <main id="main" class="layout">
+      <section class="panel"><div class="panel-inner"><div class="hint">You can check boxes or paste shorthand back into the textbox and sync it into the exam library.</div><h2 style="margin:.2rem 0 1rem 0;font-size:var(--text-lg)">Exam library</h2><div class="regions-stack" id="regions"></div></div></section>
+      <aside class="panel"><div class="panel-inner">
+        <div class="output-tools" style="justify-content:space-between;margin-bottom:1rem;align-items:flex-start"><div><div class="hint">Two-way editing enabled.</div><h2 style="margin:.2rem 0 0 0;font-size:var(--text-lg)">Copy or paste output</h2></div><div class="segmented" role="group" aria-label="Output language"><button type="button" class="active" data-lang-btn="en">English</button><button type="button" data-lang-btn="zh">中文</button></div></div>
+        <div class="meta"><div class="meta-row"><div class="field"><label for="sideStyle">Side style</label><input id="sideStyle" value="R/L" /></div><div class="field"><label for="separatorStyle">Separator</label><input id="separatorStyle" value="; " /></div></div><div class="hint">Paste text in the same shorthand format, then click “Sync pasted text”. Example: R-Spurling +ve; L-Spurling -ve; Flexion Rotation Test +ve; superior cervical TP pain</div></div>
+        <textarea id="outputText" aria-label="Generated output"></textarea><div class="parse-status" id="parseStatus">Ready.</div><div class="count" id="selectionCount">0 findings selected</div><div class="footer-actions" style="margin-top:1rem"><button class="btn btn-primary" type="button" id="copyBtn">Copy English</button><button class="btn" type="button" id="syncBtn">Sync pasted text</button><button class="btn" type="button" id="refreshBtn">Refresh output</button></div>
+      </div></aside>
+    </main>
+  </div>
+
+  <script>
+    const examData = [
+      { regionEn:'Neck', regionZh:'頸部', key:'neck', open:true, tests:[
+        { id:'neck-movement', en:'Active / Passive Movement', zh:'主動 / 被動活動', mode:'itemMulti', hasRom:true, prefix:{en:'Cervical',zh:'頸椎'}, items:[
+          { code:'Flexion', en:'Flexion', zh:'前屈', outcomes:['none','pain-left','pain-right'] },
+          { code:'Extension', en:'Extension', zh:'後伸', outcomes:['none','pain-left','pain-right'] },
+          { code:'R-Rotation', en:'Right Rotation', zh:'右旋轉', outcomes:['none','same-pain','opposite-pain'] },
+          { code:'L-Rotation', en:'Left Rotation', zh:'左旋轉', outcomes:['none','same-pain','opposite-pain'] },
+          { code:'R-Lateral-Flexion', en:'Right Lateral Flexion', zh:'右側屈', outcomes:['none','same-pain','opposite-pain'] },
+          { code:'L-Lateral-Flexion', en:'Left Lateral Flexion', zh:'左側屈', outcomes:['none','same-pain','opposite-pain'] }
+        ]},
+        { id:'flex-rotation', en:'Cervical Flexion Rotation Test', zh:'頸椎屈曲旋轉測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'spurling', en:'Spurling', zh:'椎間孔擠壓測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'hoffman', en:'Hoffman', zh:'Hoffman', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'sup-cervical-tp-palp', en:'Superior Cervical TP Pain', zh:'上位頸椎橫突壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
+        { id:'inf-cervical-tp-palp', en:'Inferior Cervical TP Pain', zh:'下位頸椎橫突壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
+        { id:'c-spine-curvature', en:'C-Spine Curvature', zh:'頸椎弧度', mode:'itemMulti', items:[
+          { code:'C3', en:'C3', zh:'C3', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
+          { code:'C4', en:'C4', zh:'C4', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
+          { code:'C5', en:'C5', zh:'C5', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
+          { code:'C6', en:'C6', zh:'C6', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
+          { code:'C7', en:'C7', zh:'C7', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] }
+        ] },
+        { id:'biceps-reflex', en:'Biceps Reflex', zh:'肱二頭肌反射', mode:'singleMulti', outcomes:['hypo','hyper','normal'] },
+        { id:'br-reflex', en:'Brachioradialis Reflex', zh:'肱橈肌反射', mode:'singleMulti', outcomes:['hypo','hyper','normal'] },
+        { id:'triceps-reflex', en:'Triceps Reflex', zh:'肱三頭肌反射', mode:'singleMulti', outcomes:['hypo','hyper','normal'] }
+      ]},
+      { regionEn:'Shoulder', regionZh:'肩部', key:'shoulder', tests:[
+        { id:'pain-arc', en:'Pain Arc', zh:'疼痛弧', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'neer', en:'Neer', zh:'尼爾測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'hawkins', en:'Hawkins', zh:'霍金斯測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'empty-can', en:'Empty Can', zh:'空罐測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'lift-off', en:'Lift Off', zh:'離背測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'apprehension', en:'Apprehension', zh:'恐懼測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'abd-lr-resist', en:'90° Abd + LR Resist', zh:'90度外展 + 外旋抗阻', mode:'sideMulti', outcomes:['positive','negative'] },
+        { id:'abd-ir-resist', en:'90° Abd + IR Resist', zh:'90度外展 + 內旋抗阻', mode:'sideMulti', outcomes:['positive','negative'] }
+      ]},
+      { regionEn:'Elbow', regionZh:'肘部', key:'elbow', tests:[
+        { id:'lateral-epi-palp', en:'Lat Epicondyle of the humerus Tenderness', zh:'肱骨外上髁壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
+        { id:'medial-epi-palp', en:'Med Epicondyle of the humerus Tenderness', zh:'肱骨內上髁壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
+        { id:'cozen', en:'Cozen', zh:'Cozen 測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'mills', en:'Mills', zh:'Mills 測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'resisted-wrist-flexion', en:'Resisted Wrist Flex', zh:'抗阻手腕屈曲', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'tinel-ulnar-groove', en:'Tinel Ulnar Groove', zh:'尺神經溝 Tinel 測試', mode:'sideMulti', outcomes:['positive','negative','normal'] }
+      ]},
+      { regionEn:'Wrist', regionZh:'手腕', key:'wrist', tests:[
+        { id:'wrist-aprom', en:'Active / Passive Movement', zh:'主動 / 被動活動', mode:'itemMulti', items:[
+          { code:'Active-Flexion', en:'Active Flexion', zh:'主動屈曲', outcomes:['none','dorsal-pain','volar-pain','radial-pain','ulnar-pain'] },
+          { code:'Passive-Flexion', en:'Passive Flexion', zh:'被動屈曲', outcomes:['none','dorsal-pain','volar-pain','radial-pain','ulnar-pain'] },
+          { code:'Active-Extension', en:'Active Extension', zh:'主動伸展', outcomes:['none','dorsal-pain','volar-pain','radial-pain','ulnar-pain'] },
+          { code:'Passive-Extension', en:'Passive Extension', zh:'被動伸展', outcomes:['none','dorsal-pain','volar-pain','radial-pain','ulnar-pain'] },
+          { code:'Ulnar-Tilt', en:'Ulnar Tilt', zh:'尺偏', outcomes:['none','dorsal-pain','volar-pain','radial-pain','ulnar-pain'] },
+          { code:'Radial-Tilt', en:'Radial Tilt', zh:'橈偏', outcomes:['none','dorsal-pain','volar-pain','radial-pain','ulnar-pain'] }
+        ]},
+        { id:'phalen', en:'Phalen', zh:'Phalen', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'tinel-wrist', en:'Tinel', zh:'Tinel', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'finkelstein', en:'Finkelstein', zh:'Finkelstein', mode:'sideMulti', outcomes:['positive','negative','normal'] }
+      ]},
+      { regionEn:'Lower Back', regionZh:'下背', key:'lower-back', tests:[
+        { id:'lumbar-motion', en:'Lumbar Motion Test', zh:'腰椎活動測試', mode:'itemMulti', hasRom:true, prefix:{en:'Lumbar',zh:'腰椎'}, items:[
+          { code:'Flexion', en:'Flexion', zh:'前屈', outcomes:['normal','pain-left','pain-right','radiating-pain'] },
+          { code:'R-Rotation-after-Flexion', en:'R-Rotation after Flexion', zh:'前屈後右旋轉', outcomes:['normal','pain-left','pain-right','radiating-pain'] },
+          { code:'L-Rotation-after-Flexion', en:'L-Rotation after Flexion', zh:'前屈後左旋轉', outcomes:['normal','pain-left','pain-right','radiating-pain'] },
+          { code:'R-Lateral-Flexion', en:'R Lateral Flexion', zh:'右側屈', outcomes:['normal','same-pain','opposite-pain','radiating-pain'] },
+          { code:'L-Lateral-Flexion', en:'L Lateral Flexion', zh:'左側屈', outcomes:['normal','same-pain','opposite-pain','radiating-pain'] }
+        ]},
+        { id:'slr', en:'SLR', zh:'直腿抬高測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'femoral-nerve-stretch', en:'Femoral Nerve Stretch', zh:'股神經牽拉測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'babinski', en:'Babinski', zh:'巴賓斯基反射', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'knee-jerk', en:'Knee Jerk Reflex', zh:'膝反射', mode:'singleMulti', outcomes:['hypo','hyper','normal'] },
+        { id:'ankle-jerk', en:'Ankle Jerk Reflex', zh:'踝反射', mode:'singleMulti', outcomes:['hypo','hyper','normal'] },
+        { id:'l-spine-curvature', en:'L-Spine Curvature', zh:'腰椎弧度', mode:'itemMulti', items:[
+          { code:'L1', en:'L1', zh:'L1', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
+          { code:'L2', en:'L2', zh:'L2', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
+          { code:'L3', en:'L3', zh:'L3', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
+          { code:'L4', en:'L4', zh:'L4', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
+          { code:'L5', en:'L5', zh:'L5', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] }
+        ]}
+      ]},
+      { regionEn:'Hip + Gluteal', regionZh:'髖部 + 臀部', key:'hip-gluteal', tests:[
+        { id:'hip-ext-resist', en:'Hip Extension Resist', zh:'抗阻髖伸展', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'hip-flex-resist', en:'Hip Flexion Resist', zh:'抗阻髖屈曲', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'piriformis-stretch', en:'Piriformis Stretch', zh:'梨狀肌牽拉測試', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'hip-abd-resist', en:'Hip Abduction Resist', zh:'抗阻髖外展', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'ober', en:'Ober', zh:'Ober 測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'long-gait', en:'Long Gait Test', zh:'長步態測試', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'sij-palp', en:'SIJ Palpation', zh:'薦髂關節壓痛', mode:'itemMulti', items:[
+          { code:'L-SIJ', en:'L-SIJ', zh:'左薦髂關節', outcomes:['positive','negative'] },
+          { code:'R-SIJ', en:'R-SIJ', zh:'右薦髂關節', outcomes:['positive','negative'] }
+        ] },
+        { id:'psis-palp', en:'PSIS Palpation', zh:'PSIS 觸診', mode:'itemMulti', items:[
+          { code:'L-PSIS', en:'L-PSIS', zh:'左 PSIS', outcomes:['spine-distance-inc','spine-distance-dec'] },
+          { code:'R-PSIS', en:'R-PSIS', zh:'右 PSIS', outcomes:['spine-distance-inc','spine-distance-dec'] }
+        ] },
+        { id:'leg-length', en:'Lower Extremity Length', zh:'下肢長度', mode:'singleMulti', outcomes:['r-longer','r-shorter','l-longer','l-shorter'] }
+      ]},
+      { regionEn:'Knee', regionZh:'膝部', key:'knee', tests:[
+        { id:'patella-tracking', en:'Patella Tracking', zh:'髕骨追蹤', mode:'sideMulti', outcomes:['normal','lateral-tilt','medial-tilt'] },
+        { id:'ting-patella', en:'Patella Compression', zh:'挺髕試驗', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'tfj-palp', en:'TF Joint Line Pain', zh:'脛股關節壓痛', mode:'sideMulti', outcomes:['medial-pain','lateral-pain'] },
+        { id:'mcmurray', en:'McMurray', zh:'麥氏測試', mode:'itemMulti', items:[
+          { code:'膝內翻內旋', en:'Varus + IR', zh:'膝內翻內旋', outcomes:['positive','negative'] },
+          { code:'膝內翻外旋', en:'Varus + ER', zh:'膝內翻外旋', outcomes:['positive','negative'] },
+          { code:'膝外翻內旋', en:'Valgus + IR', zh:'膝外翻內旋', outcomes:['positive','negative'] },
+          { code:'膝外翻外旋', en:'Valgus + ER', zh:'膝外翻外旋', outcomes:['positive','negative'] }
+        ]},
+        { id:'passive-knee-hyperext', en:'Passive Knee Hyperext', zh:'被動膝過伸測試', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'knee-ext-resist', en:'Knee Extension Resist', zh:'抗阻膝伸展', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'knee-flex-resist', en:'Knee Flexion Resist', zh:'抗阻膝屈曲', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'pes-anserine-palp', en:'Pes Anserine Pain', zh:'鵝足區壓痛', mode:'sideMulti', outcomes:['pain'] },
+        { id:'lachman', en:'Lachman', zh:'拉赫曼測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'varus-stress', en:'Varus Stress', zh:'內翻壓力測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'valgus-stress', en:'Valgus Stress', zh:'外翻壓力測試', mode:'sideMulti', outcomes:['positive','negative','normal'] }
+      ]},
+      { regionEn:'Ankle', regionZh:'足踝', key:'ankle', tests:[
+        { id:'medial-lat-malleolus-palp', en:'Med/Lat Malleolus Pain', zh:'內外踝壓痛', mode:'sideMulti', outcomes:['medial-pain','lateral-pain'] },
+        { id:'medial-malleolus-ottawa', en:'Medial Malleolus Ottawa', zh:'內踝後緣6厘米或尖端壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
+        { id:'lateral-malleolus-ottawa', en:'Lateral Malleolus Ottawa', zh:'外踝後緣6厘米或尖端壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
+        { id:'base-5th-palp', en:'Base of 5th MT Pain', zh:'第五蹠骨基底壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
+        { id:'navicular-palp', en:'Navicular Pain', zh:'舟骨壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
+        { id:'foot-inversion', en:'Foot Inversion', zh:'足內翻測試', mode:'sideMulti', outcomes:['lateral-pain','medial-pain'] },
+        { id:'foot-inversion-pf', en:'Foot Inversion + PF', zh:'足內翻加蹠屈測試', mode:'sideMulti', outcomes:['lateral-pain','medial-pain','pain'] },
+        { id:'foot-eversion', en:'Foot Eversion', zh:'足外翻測試', mode:'sideMulti', outcomes:['lateral-pain','medial-pain'] },
+        { id:'foot-df-resist', en:'Foot DF Resist', zh:'抗阻足背屈', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'foot-pf-kflex-resist', en:'Foot PF Knee Flexed Resist', zh:'屈膝位抗阻足蹠屈', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'foot-pf-kext-resist', en:'Foot PF Knee Extended Resist', zh:'伸膝位抗阻足蹠屈', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'distal-tfj-palp', en:'Distal Tibiofibular Joint Pain', zh:'遠端脛腓關節壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
+        { id:'ant-drawer', en:'Ant Drawer', zh:'前抽屜測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'talar-tilt', en:'Talar Tilt', zh:'距骨傾斜測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'thompson', en:'Thompson', zh:'湯普森測試', mode:'sideMulti', outcomes:['positive','negative','normal'] }
+      ]}
+    ];
+
+    const outcomeLabels = {
+      en:{ positive:'+ve', negative:'-ve', normal:'normal', pain:'pain', hypo:'hypo', hyper:'hyper', none:'no pain', 'same-pain':'same-side pain', 'opposite-pain':'opposite-side pain', 'pain-left':'pain on left', 'pain-right':'pain on right', 'radiating-pain':'radiating to lower leg', 'dorsal-pain':'dorsal pain', 'volar-pain':'volar pain', 'radial-pain':'radial pain', 'ulnar-pain':'ulnar pain', 'medial-pain':'medial pain', 'lateral-pain':'lateral pain', 'lateral-tilt':'lateral tilt', 'medial-tilt':'medial tilt', 'convex-right':'convex to right', 'convex-left':'convex to left', 'sp-point-right':'spinous process pointing to right', 'sp-point-left':'spinous process pointing to left', 'spine-distance-inc':'L-spine distance increased', 'spine-distance-dec':'L-spine distance decreased', 'r-longer':'longer R-lower extremity', 'r-shorter':'shorter R-lower extremity', 'l-longer':'longer L-lower extremity', 'l-shorter':'shorter L-lower extremity' },
+      zh:{ positive:'+ve', negative:'-ve', normal:'正常', pain:'痛', hypo:'減弱', hyper:'亢進', none:'無痛', 'same-pain':'同側痛', 'opposite-pain':'對側痛', 'pain-left':'左側痛', 'pain-right':'右側痛', 'radiating-pain':'放射至小腿', 'dorsal-pain':'背側痛', 'volar-pain':'掌側痛', 'radial-pain':'橈側痛', 'ulnar-pain':'尺側痛', 'medial-pain':'內側痛', 'lateral-pain':'外側痛', 'lateral-tilt':'外側傾斜', 'medial-tilt':'內側傾斜', 'convex-right':'向右凸', 'convex-left':'向左凸', 'sp-point-right':'棘突偏右', 'sp-point-left':'棘突偏左', 'spine-distance-inc':'腰椎距離增加', 'spine-distance-dec':'腰椎距離減少', 'r-longer':'右下肢較長', 'r-shorter':'右下肢較短', 'l-longer':'左下肢較長', 'l-shorter':'左下肢較短' }
+    };
+
+    const uiLabels = {
+      positive:'+ve / 陽性', negative:'-ve / 陰性', normal:'Normal / 正常', pain:'Pain / 痛', hypo:'Hypo / 減弱', hyper:'Hyper / 亢進', none:'No pain / 無痛', 'same-pain':'Same side / 同側痛', 'opposite-pain':'Opp side / 對側痛', 'pain-left':'Pain L / 左側痛', 'pain-right':'Pain R / 右側痛', 'radiating-pain':'Rad to LL / 放射至小腿', 'dorsal-pain':'Dorsal / 背側', 'volar-pain':'Volar / 掌側', 'radial-pain':'Radial / 橈側', 'ulnar-pain':'Ulnar / 尺側', 'medial-pain':'Medial / 內側', 'lateral-pain':'Lateral / 外側', 'lateral-tilt':'Lat tilt / 外傾', 'medial-tilt':'Med tilt / 內傾', 'gen-convex-right':'Gen→R / 整體右凸', 'gen-convex-left':'Gen→L / 整體左凸', 'sup-convex-right':'Sup→R / 上位右凸', 'sup-convex-left':'Sup→L / 上位左凸', 'inf-convex-right':'Inf→R / 下位右凸', 'inf-convex-left':'Inf→L / 下位左凸', 'convex-right':'Conv→R / 向右凸', 'convex-left':'Conv→L / 向左凸', 'sp-point-right':'SP→R / 棘突偏右', 'sp-point-left':'SP→L / 棘突偏左'
+    };
+
+    const state = { language:'en', selected:new Map(), romValues:new Map(), theme:'light', suppressTextSync:false };
+    const regionsEl = document.getElementById('regions');
+    const outputText = document.getElementById('outputText');
+    const selectionCount = document.getElementById('selectionCount');
+    const copyBtn = document.getElementById('copyBtn');
+    const separatorInput = document.getElementById('separatorStyle');
+    const parseStatus = document.getElementById('parseStatus');
+
+    function sidePrefix(side){ const style=(document.getElementById('sideStyle').value||'R/L').trim(); const map={ 'R/L':{R:'R-',L:'L-',NA:''}, 'Rt/Lt':{R:'Rt-',L:'Lt-',NA:''}, '右/左':{R:'右-',L:'左-',NA:''} }; const active=map[style]||map['R/L']; return active[side]||''; }
+    function getOutcomeLabel(code, lang){ return outcomeLabels[lang][code] || code; }
+    function encodeKey(parts){ return parts.join('::'); }
+
+    function renderCheckbox(name, regionKey, testId, rowCode, outcome){
+      const id = `${name}-${outcome}`.replace(/[^\w\-\u4e00-\u9fff]/g,'_');
+      return `<div class="check"><input type="checkbox" id="${id}" value="${outcome}" data-region="${regionKey}" data-test="${testId}" data-row="${rowCode}" data-outcome="${outcome}"><label for="${id}">${uiLabels[outcome] || outcome}</label></div>`;
+    }
+
+    function renderRow(region, test, row){ const romHtml = test.hasRom ? `<div class="rom-wrap"><span class="rom-label">ROM°:</span><input type="text" class="rom-input" data-region="${region.key}" data-test="${test.id}" data-row="${row.code}" placeholder="e.g. 45" maxlength="6"></div>` : ''; return `<div class="test-row"><div class="row-tag">${row.tag}</div><div class="checks">${row.outcomes.map(outcome => renderCheckbox(`${region.key}__${test.id}__${row.code}`, region.key, test.id, row.code, outcome)).join('')}${romHtml}</div></div>`; }
+    function renderTest(region, test){ let rows=[]; if(test.mode==='sideMulti') rows=['R','L'].map(side=>({ code:side, tag:side==='R'?'Right / 右':'Left / 左', outcomes:test.outcomes })); if(test.mode==='singleMulti') rows=[{ code:'NA', tag:'Overall', outcomes:test.outcomes }]; if(test.mode==='itemMulti') rows=test.items.map(item=>({ code:item.code, tag:item.en, outcomes:item.outcomes })); return `<fieldset class="test-card"><legend class="test-title"><strong>${test.en}</strong><span>${test.zh}</span></legend><div class="row-stack">${rows.map(row => renderRow(region,test,row)).join('')}</div></fieldset>`; }
+    function renderRegions(){ regionsEl.innerHTML = examData.map(region => `<details class="region" name="exam-regions" ${region.open ? 'open' : ''}><summary><div class="summary-title"><strong>${region.regionEn}</strong><span class="hint">${region.regionZh}</span></div><div class="summary-meta"><span class="hint">Collapse / Expand</span><svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"></path></svg></div></summary><div class="region-body"><div class="region-tools"><button type="button" class="mini-btn" data-region-action="clear" data-region="${region.key}">Clear region</button></div>${region.tests.map(test => renderTest(region,test)).join('')}</div></details>`).join(''); }
+
+    function romKey(regionKey,testId,rowCode){ return regionKey+'::'+testId+'::'+rowCode; }
+    function buildToken(regionKey, testId, rowCode, outcome, lang){
+      const region=examData.find(r=>r.key===regionKey); const test=region.tests.find(t=>t.id===testId); const label=lang==='en'?test.en:test.zh; const outcomeLabel=getOutcomeLabel(outcome,lang);
+      if(test.mode==='sideMulti') return `${sidePrefix(rowCode)}${label} ${outcomeLabel}`.trim();
+      if(test.mode==='singleMulti') return `${label.replace(' Reflex','').trim()} ${outcomeLabel}`.trim();
+      const item=test.items.find(i=>i.code===rowCode); const itemLabel=lang==='en'?item.en:item.zh; const romSuffix = test.hasRom ? (()=>{ const v=state.romValues.get(romKey(regionKey,testId,rowCode)); return v ? ` (ROM: ${v})` : ''; })() : ''; if(test.id==='mcmurray') return `${label} ${lang==='en'?item.en:item.zh} ${outcomeLabel}`.trim(); if(test.prefix){ const pfx=lang==='en'?test.prefix.en:test.prefix.zh; return `${pfx} ${itemLabel} ${outcomeLabel}${romSuffix}`.trim(); } return `${itemLabel} ${outcomeLabel}${romSuffix}`.trim();
+    }
+
+    function getOrderRank(regionKey, testId, rowCode, outcome){
+      const regionIdx=examData.findIndex(r=>r.key===regionKey);
+      const region=regionIdx>=0?examData[regionIdx]:null;
+      const testIdx=region?region.tests.findIndex(t=>t.id===testId):0;
+      const test=(region && testIdx>=0)?region.tests[testIdx]:null;
+      let rowIdx=0, outcomeArr=[];
+      if(test){
+        if(test.mode==='itemMulti'){ rowIdx=test.items.findIndex(i=>i.code===rowCode); const item=test.items[rowIdx]; outcomeArr=item?item.outcomes:[]; }
+        else if(test.mode==='sideMulti'){ rowIdx=rowCode==='R'?0:1; outcomeArr=test.outcomes; }
+        else { rowIdx=0; outcomeArr=test.outcomes; }
+      }
+      const outcomeIdx = outcome!=null ? outcomeArr.indexOf(outcome) : -1;
+      return [regionIdx<0?999:regionIdx, testIdx<0?999:testIdx, rowIdx<0?999:rowIdx, outcomeIdx<0?999:outcomeIdx];
+    }
+    function compareRank(a,b){ for(let i=0;i<a.length;i++){ if(a[i]!==b[i]) return a[i]-b[i]; } return 0; }
+
+    function collectOutput(lang){
+      const entries=[];
+      const emittedRows=new Set();
+      [...state.selected.entries()].forEach(([key,checked])=>{
+        if(!checked) return;
+        const [regionKey,testId,rowCode,outcome]=key.split('::');
+        entries.push({ rank:getOrderRank(regionKey,testId,rowCode,outcome), token:buildToken(regionKey,testId,rowCode,outcome,lang) });
+        emittedRows.add(romKey(regionKey,testId,rowCode));
+      });
+      // ROM-only tokens (no outcome checked for this row)
+      [...state.romValues.entries()].forEach(([rk,val])=>{
+        if(!val || emittedRows.has(rk)) return;
+        const [regionKey,testId,rowCode]=rk.split('::');
+        const region=examData.find(r=>r.key===regionKey);
+        if(!region) return;
+        const test=region.tests.find(t=>t.id===testId);
+        if(!test||!test.hasRom) return;
+        const item=test.items.find(i=>i.code===rowCode);
+        if(!item) return;
+        const itemLabel=lang==='en'?item.en:item.zh;
+        const token = test.prefix ? `${lang==='en'?test.prefix.en:test.prefix.zh} ${itemLabel} (ROM: ${val})` : `${itemLabel} (ROM: ${val})`;
+        entries.push({ rank:getOrderRank(regionKey,testId,rowCode,null), token });
+      });
+      entries.sort((a,b)=>compareRank(a.rank,b.rank));
+      return entries.map(e=>e.token).join(separatorInput.value || '; ');
+    }
+    function updateOutput(){ state.suppressTextSync=true; outputText.value = collectOutput(state.language); state.suppressTextSync=false; const count=[...state.selected.values()].filter(Boolean).length; selectionCount.textContent=`${count} finding${count===1?'':'s'} selected`; copyBtn.textContent = state.language === 'en' ? 'Copy English' : '複製中文'; parseStatus.textContent='Ready.'; }
+
+    function clearSelections(){ document.querySelectorAll('input[type="checkbox"]').forEach(i=>i.checked=false); state.selected.clear(); state.romValues.clear(); document.querySelectorAll('.rom-input').forEach(i=>{i.value='';i.classList.remove('has-value');}); }
+    function setChecked(regionKey,testId,rowCode,outcome,checked=true){ const key=encodeKey([regionKey,testId,rowCode,outcome]); state.selected.set(key,checked); const selector=`input[data-region="${CSS.escape(regionKey)}"][data-test="${CSS.escape(testId)}"][data-row="${CSS.escape(rowCode)}"][data-outcome="${CSS.escape(outcome)}"]`; const input=document.querySelector(selector); if(input) input.checked=checked; }
+
+    function parsePastedText(){
+      const raw=outputText.value.trim();
+      clearSelections();
+      if(!raw){ updateOutput(); parseStatus.textContent='Textbox cleared.'; return; }
+      const tokens=raw.split(';').map(t=>t.trim()).filter(Boolean);
+      const romPattern=/\s*\(ROM:\s*([^)]+?)\)\s*$/i;
+      let matched=0;
+      const sidePattern=/^(R|L|Rt|Lt|右|左)-/;
+      tokens.forEach(token=>{
+        let working=token;
+        // Extract ROM suffix
+        let romVal=null;
+        const romMatch=working.match(romPattern);
+        if(romMatch){ romVal=romMatch[1].replace(/;/g,'').trim(); working=working.replace(romPattern,'').trim(); }
+        let side='NA';
+        const sideMatch=working.match(sidePattern);
+        if(sideMatch){ const s=sideMatch[1]; side = (s==='R'||s==='Rt'||s==='右') ? 'R' : 'L'; working = working.replace(sidePattern,'').trim(); }
+        examData.forEach(region=>{
+          region.tests.forEach(test=>{
+            if(test.mode==='sideMulti' || test.mode==='singleMulti'){
+              const labelEn=test.en.toLowerCase(); const labelZh=test.zh.toLowerCase(); const workLower=working.toLowerCase();
+              if(workLower.startsWith(labelEn) || working.startsWith(test.zh)){
+                const remainder=working.slice(workLower.startsWith(labelEn) ? test.en.length : test.zh.length).trim();
+                const foundOutcome=Object.keys(outcomeLabels.en).find(code => remainder.toLowerCase()===outcomeLabels.en[code] || remainder===outcomeLabels.zh[code]);
+                if(foundOutcome){ setChecked(region.key,test.id,test.mode==='sideMulti'?side:'NA',foundOutcome,true); matched++; }
+              }
+            }
+            if(test.mode==='itemMulti'){
+              let workItem=working;
+              if(test.prefix){
+                if(workItem.toLowerCase().startsWith(test.prefix.en.toLowerCase())) workItem=workItem.slice(test.prefix.en.length).trim();
+                else if(workItem.startsWith(test.prefix.zh)) workItem=workItem.slice(test.prefix.zh.length).trim();
+              }
+              // Non-mcmurray itemMulti: pick the single best (longest valid prefix) match
+              if(test.id!=='mcmurray'){
+                const candidates=test.items.map(item=>{
+                  const enMatch=workItem.toLowerCase().startsWith(item.en.toLowerCase());
+                  const zhMatch=workItem.startsWith(item.zh);
+                  if(!enMatch && !zhMatch) return null;
+                  const labelLen=enMatch?item.en.length:item.zh.length;
+                  const remainder=workItem.slice(labelLen).trim();
+                  const foundOutcome=Object.keys(outcomeLabels.en).find(code => remainder.toLowerCase()===outcomeLabels.en[code] || remainder===outcomeLabels.zh[code]);
+                  const validRomOnly = test.hasRom && romVal && remainder==='';
+                  if(!foundOutcome && !validRomOnly) return null;
+                  return {item,foundOutcome,labelLen};
+                }).filter(Boolean).sort((a,b)=>b.labelLen-a.labelLen);
+                const match=candidates[0];
+                if(match){
+                  if(match.foundOutcome){ setChecked(region.key,test.id,match.item.code,match.foundOutcome,true); }
+                  if(test.hasRom && romVal){
+                    const rk=romKey(region.key,test.id,match.item.code);
+                    state.romValues.set(rk,romVal);
+                    const inp=document.querySelector(`.rom-input[data-region="${CSS.escape(region.key)}"][data-test="${CSS.escape(test.id)}"][data-row="${CSS.escape(match.item.code)}"]`);
+                    if(inp){inp.value=romVal;inp.classList.toggle('has-value',!!romVal);}
+                  }
+                  matched++;
+                }
+              }
+              // mcmurray keeps its original per-item matching
+              if(test.id==='mcmurray'){
+                test.items.forEach(item=>{
+                  if(workItem.startsWith(test.en) || workItem.startsWith(test.zh)){
+                    const rest=workItem.startsWith(test.en) ? workItem.slice(test.en.length).trim() : workItem.slice(test.zh.length).trim();
+                    if(rest.startsWith(item.en) || rest.startsWith(item.zh)){
+                      const remainder=rest.startsWith(item.en) ? rest.slice(item.en.length).trim() : rest.slice(item.zh.length).trim();
+                      const foundOutcome=Object.keys(outcomeLabels.en).find(code => remainder.toLowerCase()===outcomeLabels.en[code] || remainder===outcomeLabels.zh[code]);
+                      if(foundOutcome){ setChecked(region.key,test.id,item.code,foundOutcome,true); matched++; }
+                    }
+                  }
+                });
+              }
+            }
+          });
+        });
+      });
+      updateOutput();
+      parseStatus.textContent = `Synced pasted text. Matched ${matched} token${matched===1?'':'s'}.`;
+    }
+
+    function copyFallback(){ outputText.focus(); outputText.select(); document.execCommand('copy'); }
+    async function copyOutput(){ const text=outputText.value.trim(); if(!text) return; try{ if(navigator.clipboard&&typeof navigator.clipboard.writeText==='function') await navigator.clipboard.writeText(text); else copyFallback(); } catch(e){ copyFallback(); } copyBtn.textContent = state.language === 'en' ? 'Copied' : '已複製'; setTimeout(updateOutput,900); }
+
+    function attachEvents(){
+      regionsEl.addEventListener('change', e => { const input=e.target; if(input.tagName!=='INPUT'||input.type!=='checkbox') return; const key=encodeKey([input.dataset.region,input.dataset.test,input.dataset.row,input.dataset.outcome]); state.selected.set(key,input.checked); updateOutput(); });
+      regionsEl.addEventListener('input', e => { const inp=e.target; if(!inp.classList.contains('rom-input')) return; const val=inp.value.replace(/;/g,'').trim(); const rk=romKey(inp.dataset.region,inp.dataset.test,inp.dataset.row); if(val) state.romValues.set(rk,val); else state.romValues.delete(rk); inp.classList.toggle('has-value',!!val); updateOutput(); });
+      regionsEl.addEventListener('click', e => { const btn=e.target.closest('[data-region-action]'); if(!btn) return; const regionKey=btn.dataset.region; document.querySelectorAll(`input[type='checkbox'][data-region="${regionKey}"]`).forEach(input=>{ input.checked=false; state.selected.set(encodeKey([input.dataset.region,input.dataset.test,input.dataset.row,input.dataset.outcome]),false); });
+          document.querySelectorAll(`.rom-input[data-region="${regionKey}"]`).forEach(inp=>{ const rk=romKey(inp.dataset.region,inp.dataset.test,inp.dataset.row); state.romValues.delete(rk); inp.value=''; inp.classList.remove('has-value'); }); updateOutput(); });
+      document.querySelectorAll('[data-lang-btn]').forEach(btn => btn.addEventListener('click', ()=>{ state.language=btn.dataset.langBtn; document.querySelectorAll('[data-lang-btn]').forEach(b=>b.classList.toggle('active', b===btn)); updateOutput(); }));
+      document.getElementById('refreshBtn').addEventListener('click', updateOutput);
+      document.getElementById('syncBtn').addEventListener('click', parsePastedText);
+      document.getElementById('clearAll').addEventListener('click', ()=>{ clearSelections(); updateOutput(); });
+      document.getElementById('themeToggle').addEventListener('click', ()=>{ state.theme = state.theme==='light' ? 'dark' : 'light'; document.documentElement.setAttribute('data-theme', state.theme); document.getElementById('themeToggle').textContent = state.theme==='light' ? 'Dark mode' : 'Light mode'; });
+      document.getElementById('copyBtn').addEventListener('click', copyOutput);
+      document.getElementById('sideStyle').addEventListener('change', updateOutput);
+      separatorInput.addEventListener('input', updateOutput);
+      outputText.addEventListener('input', ()=>{ if(!state.suppressTextSync) parseStatus.textContent='Textbox edited. Click “Sync pasted text” to apply changes to the exam library.'; });
+    }
+
+    renderRegions(); attachEvents(); updateOutput();
+  </script>
+</body>
+</html>
