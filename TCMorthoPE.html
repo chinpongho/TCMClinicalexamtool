@@ -97,6 +97,24 @@
         { id:'triceps-reflex', en:'Triceps Reflex', zh:'肱三頭肌反射', mode:'singleMulti', outcomes:['hypo','hyper','normal'] }
       ]},
       { regionEn:'Shoulder', regionZh:'肩部', key:'shoulder', tests:[
+        { id:'shoulder-motion', en:'Shoulder Motion', zh:'肩部活動', mode:'itemMulti', hasRom:true, items:[
+          { code:'L-A-Flex', en:'L-Shoulder active Flexion', zh:'左肩主動屈曲', outcomes:['positive','negative'] },
+          { code:'L-A-Ext', en:'L-Shoulder active Extension', zh:'左肩主動後伸', outcomes:['positive','negative'] },
+          { code:'L-A-Abd', en:'L-Shoulder active Abduction', zh:'左肩主動外展', outcomes:['positive','negative'] },
+          { code:'L-A-Add', en:'L-Shoulder active Adduction', zh:'左肩主動內收', outcomes:['positive','negative'] },
+          { code:'L-P-Flex', en:'L-Shoulder passive Flexion', zh:'左肩被動屈曲', outcomes:['positive','negative'] },
+          { code:'L-P-Ext', en:'L-Shoulder passive Extension', zh:'左肩被動後伸', outcomes:['positive','negative'] },
+          { code:'L-P-Abd', en:'L-Shoulder passive Abduction', zh:'左肩被動外展', outcomes:['positive','negative'] },
+          { code:'L-P-Add', en:'L-Shoulder passive Adduction', zh:'左肩被動內收', outcomes:['positive','negative'] },
+          { code:'R-A-Flex', en:'R-Shoulder active Flexion', zh:'右肩主動屈曲', outcomes:['positive','negative'] },
+          { code:'R-A-Ext', en:'R-Shoulder active Extension', zh:'右肩主動後伸', outcomes:['positive','negative'] },
+          { code:'R-A-Abd', en:'R-Shoulder active Abduction', zh:'右肩主動外展', outcomes:['positive','negative'] },
+          { code:'R-A-Add', en:'R-Shoulder active Adduction', zh:'右肩主動內收', outcomes:['positive','negative'] },
+          { code:'R-P-Flex', en:'R-Shoulder passive Flexion', zh:'右肩被動屈曲', outcomes:['positive','negative'] },
+          { code:'R-P-Ext', en:'R-Shoulder passive Extension', zh:'右肩被動後伸', outcomes:['positive','negative'] },
+          { code:'R-P-Abd', en:'R-Shoulder passive Abduction', zh:'右肩被動外展', outcomes:['positive','negative'] },
+          { code:'R-P-Add', en:'R-Shoulder passive Adduction', zh:'右肩被動內收', outcomes:['positive','negative'] }
+        ]},
         { id:'pain-arc', en:'Pain Arc', zh:'疼痛弧', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'neer', en:'Neer', zh:'尼爾測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'hawkins', en:'Hawkins', zh:'霍金斯測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
@@ -302,6 +320,7 @@
         const romMatch=working.match(romPattern);
         if(romMatch){ romVal=romMatch[1].replace(/;/g,'').trim(); working=working.replace(romPattern,'').trim(); }
         let side='NA';
+        const workBase=working; // pre-side-strip: itemMulti item names may start with L-/R-
         const sideMatch=working.match(sidePattern);
         if(sideMatch){ const s=sideMatch[1]; side = (s==='R'||s==='Rt'||s==='右') ? 'R' : 'L'; working = working.replace(sidePattern,'').trim(); }
         examData.forEach(region=>{
@@ -315,7 +334,7 @@
               }
             }
             if(test.mode==='itemMulti'){
-              let workItem=working;
+              let workItem=workBase;
               if(test.prefix){
                 if(workItem.toLowerCase().startsWith(test.prefix.en.toLowerCase())) workItem=workItem.slice(test.prefix.en.length).trim();
                 else if(workItem.startsWith(test.prefix.zh)) workItem=workItem.slice(test.prefix.zh.length).trim();
