@@ -50,7 +50,7 @@
           <div class="logo" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5h8l4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"></path><path d="M14 5v4h4"></path><path d="M8 13h8M8 17h5"></path></svg></div>
           <div>
             <h1>Clinical history tool for orthopaedic physical examinations, 骨傷科檢查病歷工具</h1>
-            <div class="caption">Created by Clinical Division, School of Chinese Medicine, HKBU. Internal use only.</div>
+            <div class="caption">Created by Ho Chin Pong, Clinical Division, School of Chinese Medicine, HKBU. Internal use only.</div>
             <div class="sub">Bilingual, collapsible, checkbox-based clinical examination shorthand builder with two-way editing between the exam library and output textbox.</div>
           </div>
         </div>
@@ -80,17 +80,17 @@
           { code:'R-Lateral-Flexion', en:'Right Lateral Flexion', zh:'右側屈', outcomes:['none','same-pain','opposite-pain'] },
           { code:'L-Lateral-Flexion', en:'Left Lateral Flexion', zh:'左側屈', outcomes:['none','same-pain','opposite-pain'] }
         ]},
-        { id:'flex-rotation', en:'Cervical Flexion Rotation Test', zh:'頸椎屈曲旋轉測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'flex-rotation', en:'Cervical Flexion Rotation Test', zh:'頸椎屈曲旋轉測試', mode:'sideMulti', hasRom:true, outcomes:['positive','negative','normal'] },
         { id:'spurling', en:'Spurling', zh:'椎間孔擠壓測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'hoffman', en:'Hoffman', zh:'Hoffman', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'sup-cervical-tp-palp', en:'Superior Cervical TP Pain', zh:'上位頸椎橫突壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
         { id:'inf-cervical-tp-palp', en:'Inferior Cervical TP Pain', zh:'下位頸椎橫突壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
         { id:'c-spine-curvature', en:'C-Spine Curvature', zh:'頸椎弧度', mode:'itemMulti', items:[
-          { code:'C3', en:'C3', zh:'C3', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
-          { code:'C4', en:'C4', zh:'C4', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
-          { code:'C5', en:'C5', zh:'C5', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
-          { code:'C6', en:'C6', zh:'C6', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
-          { code:'C7', en:'C7', zh:'C7', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] }
+          { code:'C3', en:'C3', zh:'C3', outcomes:['convex-right','convex-left','r-rotation','l-rotation'] },
+          { code:'C4', en:'C4', zh:'C4', outcomes:['convex-right','convex-left','r-rotation','l-rotation'] },
+          { code:'C5', en:'C5', zh:'C5', outcomes:['convex-right','convex-left','r-rotation','l-rotation'] },
+          { code:'C6', en:'C6', zh:'C6', outcomes:['convex-right','convex-left','r-rotation','l-rotation'] },
+          { code:'C7', en:'C7', zh:'C7', outcomes:['convex-right','convex-left','r-rotation','l-rotation'] }
         ] },
         { id:'biceps-reflex', en:'Biceps Reflex', zh:'肱二頭肌反射', mode:'singleMulti', outcomes:['hypo','hyper','normal'] },
         { id:'br-reflex', en:'Brachioradialis Reflex', zh:'肱橈肌反射', mode:'singleMulti', outcomes:['hypo','hyper','normal'] },
@@ -115,21 +115,34 @@
           { code:'R-P-Abd', en:'R-Shoulder passive Abduction', zh:'右肩被動外展', outcomes:['positive','negative'] },
           { code:'R-P-Add', en:'R-Shoulder passive Adduction', zh:'右肩被動內收', outcomes:['positive','negative'] }
         ]},
+        { id:'abd-lr-resist', en:'90° Abd + LR resisted isometric muscle test', zh:'90度外展 + 外旋抗阻等長肌力測試', mode:'sideMulti', outcomes:['positive','negative'] },
+        { id:'abd-ir-resist', en:'90° Abd + IR resisted isometric muscle test', zh:'90度外展 + 內旋抗阻等長肌力測試', mode:'sideMulti', outcomes:['positive','negative'] },
+        { id:'shoulder-palp', en:'Shoulder Palpation', zh:'肩部觸診', mode:'itemMulti', items:[
+          { code:'L-Coracoid', en:'L Coracoid process', zh:'左喙突', outcomes:['positive','negative'] },
+          { code:'L-AC-Joint', en:'L AC Joint', zh:'左肩鎖關節', outcomes:['positive','negative'] },
+          { code:'L-Acromion', en:'L Acromion', zh:'左肩峰', outcomes:['positive','negative'] },
+          { code:'L-Intertubercular-Groove', en:'L Intertubercular groove', zh:'左結節間溝', outcomes:['positive','negative'] },
+          { code:'L-Deltoid-Tuberosity', en:'L Deltoid tuberosity', zh:'左三角肌粗隆', outcomes:['positive','negative'] },
+          { code:'R-Coracoid', en:'R Coracoid process', zh:'右喙突', outcomes:['positive','negative'] },
+          { code:'R-AC-Joint', en:'R AC Joint', zh:'右肩鎖關節', outcomes:['positive','negative'] },
+          { code:'R-Acromion', en:'R Acromion', zh:'右肩峰', outcomes:['positive','negative'] },
+          { code:'R-Intertubercular-Groove', en:'R Intertubercular groove', zh:'右結節間溝', outcomes:['positive','negative'] },
+          { code:'R-Deltoid-Tuberosity', en:'R Deltoid tuberosity', zh:'右三角肌粗隆', outcomes:['positive','negative'] }
+        ]},
+        { id:'adson', en:'Adson', zh:'Adson 測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'pain-arc', en:'Pain Arc', zh:'疼痛弧', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'neer', en:'Neer', zh:'尼爾測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'hawkins', en:'Hawkins', zh:'霍金斯測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'empty-can', en:'Empty Can', zh:'空罐測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'lift-off', en:'Lift Off', zh:'離背測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
-        { id:'apprehension', en:'Apprehension', zh:'恐懼測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
-        { id:'abd-lr-resist', en:'90° Abd + LR Resist', zh:'90度外展 + 外旋抗阻', mode:'sideMulti', outcomes:['positive','negative'] },
-        { id:'abd-ir-resist', en:'90° Abd + IR Resist', zh:'90度外展 + 內旋抗阻', mode:'sideMulti', outcomes:['positive','negative'] }
+        { id:'apprehension', en:'Apprehension', zh:'恐懼測試', mode:'sideMulti', outcomes:['positive','negative','normal'] }
       ]},
       { regionEn:'Elbow', regionZh:'肘部', key:'elbow', tests:[
         { id:'lateral-epi-palp', en:'Lat Epicondyle of the humerus Tenderness', zh:'肱骨外上髁壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
         { id:'medial-epi-palp', en:'Med Epicondyle of the humerus Tenderness', zh:'肱骨內上髁壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
         { id:'cozen', en:'Cozen', zh:'Cozen 測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'mills', en:'Mills', zh:'Mills 測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
-        { id:'resisted-wrist-flexion', en:'Resisted Wrist Flex', zh:'抗阻手腕屈曲', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'resisted-wrist-flexion', en:'Wrist flexion resisted isometric muscle test', zh:'手腕屈曲抗阻等長肌力測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'tinel-ulnar-groove', en:'Tinel Ulnar Groove', zh:'尺神經溝 Tinel 測試', mode:'sideMulti', outcomes:['positive','negative','normal'] }
       ]},
       { regionEn:'Wrist', regionZh:'手腕', key:'wrist', tests:[
@@ -153,24 +166,25 @@
           { code:'R-Lateral-Flexion', en:'R Lateral Flexion', zh:'右側屈', outcomes:['normal','same-pain','opposite-pain','radiating-pain'] },
           { code:'L-Lateral-Flexion', en:'L Lateral Flexion', zh:'左側屈', outcomes:['normal','same-pain','opposite-pain','radiating-pain'] }
         ]},
+        { id:'l-spine-curvature', en:'L-Spine Curvature', zh:'腰椎弧度', mode:'itemMulti', items:[
+          { code:'L1', en:'L1', zh:'L1', outcomes:['convex-right','convex-left','r-rotation','l-rotation'] },
+          { code:'L2', en:'L2', zh:'L2', outcomes:['convex-right','convex-left','r-rotation','l-rotation'] },
+          { code:'L3', en:'L3', zh:'L3', outcomes:['convex-right','convex-left','r-rotation','l-rotation'] },
+          { code:'L4', en:'L4', zh:'L4', outcomes:['convex-right','convex-left','r-rotation','l-rotation'] },
+          { code:'L5', en:'L5', zh:'L5', outcomes:['convex-right','convex-left','r-rotation','l-rotation'] }
+        ]},
         { id:'slr', en:'SLR', zh:'直腿抬高測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'femoral-nerve-stretch', en:'Femoral Nerve Stretch', zh:'股神經牽拉測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'babinski', en:'Babinski', zh:'巴賓斯基反射', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'knee-jerk', en:'Knee Jerk Reflex', zh:'膝反射', mode:'singleMulti', outcomes:['hypo','hyper','normal'] },
-        { id:'ankle-jerk', en:'Ankle Jerk Reflex', zh:'踝反射', mode:'singleMulti', outcomes:['hypo','hyper','normal'] },
-        { id:'l-spine-curvature', en:'L-Spine Curvature', zh:'腰椎弧度', mode:'itemMulti', items:[
-          { code:'L1', en:'L1', zh:'L1', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
-          { code:'L2', en:'L2', zh:'L2', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
-          { code:'L3', en:'L3', zh:'L3', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
-          { code:'L4', en:'L4', zh:'L4', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] },
-          { code:'L5', en:'L5', zh:'L5', outcomes:['convex-right','convex-left','sp-point-right','sp-point-left'] }
-        ]}
+        { id:'ankle-jerk', en:'Ankle Jerk Reflex', zh:'踝反射', mode:'singleMulti', outcomes:['hypo','hyper','normal'] }
       ]},
       { regionEn:'Hip + Gluteal', regionZh:'髖部 + 臀部', key:'hip-gluteal', tests:[
-        { id:'hip-ext-resist', en:'Hip Extension Resist', zh:'抗阻髖伸展', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
-        { id:'hip-flex-resist', en:'Hip Flexion Resist', zh:'抗阻髖屈曲', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'hip-ext-resist', en:'Hip Extension resisted isometric muscle test', zh:'髖伸展抗阻等長肌力測試', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'hip-flex-resist', en:'Hip flexion resisted isometric muscle test', zh:'髖屈曲抗阻等長肌力測試', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'hip-flex-kflex-resist', en:'Hip flexion while knee flexed resisted isometric muscle test', zh:'屈膝位髖屈曲抗阻等長肌力測試', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
         { id:'piriformis-stretch', en:'Piriformis Stretch', zh:'梨狀肌牽拉測試', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
-        { id:'hip-abd-resist', en:'Hip Abduction Resist', zh:'抗阻髖外展', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'hip-abd-resist', en:'Hip Abduction resisted isometric muscle test', zh:'髖外展抗阻等長肌力測試', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
         { id:'ober', en:'Ober', zh:'Ober 測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'long-gait', en:'Long Gait Test', zh:'長步態測試', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
         { id:'sij-palp', en:'SIJ Palpation', zh:'薦髂關節壓痛', mode:'itemMulti', items:[
@@ -194,8 +208,8 @@
           { code:'膝外翻外旋', en:'Valgus + ER', zh:'膝外翻外旋', outcomes:['positive','negative'] }
         ]},
         { id:'passive-knee-hyperext', en:'Passive Knee Hyperext', zh:'被動膝過伸測試', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
-        { id:'knee-ext-resist', en:'Knee Extension Resist', zh:'抗阻膝伸展', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
-        { id:'knee-flex-resist', en:'Knee Flexion Resist', zh:'抗阻膝屈曲', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'knee-ext-resist', en:'Knee extension resisted isometric muscle test', zh:'膝伸展抗阻等長肌力測試', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
+        { id:'knee-flex-resist', en:'Knee flexion resisted isometric muscle test', zh:'膝屈曲抗阻等長肌力測試', mode:'sideMulti', outcomes:['positive','negative','pain','normal'] },
         { id:'pes-anserine-palp', en:'Pes Anserine Pain', zh:'鵝足區壓痛', mode:'sideMulti', outcomes:['pain'] },
         { id:'lachman', en:'Lachman', zh:'拉赫曼測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'varus-stress', en:'Varus Stress', zh:'內翻壓力測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
@@ -210,9 +224,9 @@
         { id:'foot-inversion', en:'Foot Inversion', zh:'足內翻測試', mode:'sideMulti', outcomes:['lateral-pain','medial-pain'] },
         { id:'foot-inversion-pf', en:'Foot Inversion + PF', zh:'足內翻加蹠屈測試', mode:'sideMulti', outcomes:['lateral-pain','medial-pain','pain'] },
         { id:'foot-eversion', en:'Foot Eversion', zh:'足外翻測試', mode:'sideMulti', outcomes:['lateral-pain','medial-pain'] },
-        { id:'foot-df-resist', en:'Foot DF Resist', zh:'抗阻足背屈', mode:'sideMulti', outcomes:['positive','negative','normal'] },
-        { id:'foot-pf-kflex-resist', en:'Foot PF Knee Flexed Resist', zh:'屈膝位抗阻足蹠屈', mode:'sideMulti', outcomes:['positive','negative','normal'] },
-        { id:'foot-pf-kext-resist', en:'Foot PF Knee Extended Resist', zh:'伸膝位抗阻足蹠屈', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'foot-df-resist', en:'Foot DF resisted isometric muscle test', zh:'足背屈抗阻等長肌力測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'foot-pf-kflex-resist', en:'Foot PF Knee flexed resisted isometric muscle test', zh:'屈膝位足蹠屈抗阻等長肌力測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
+        { id:'foot-pf-kext-resist', en:'Foot PF Knee Extended resisted isometric muscle test', zh:'伸膝位足蹠屈抗阻等長肌力測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'distal-tfj-palp', en:'Distal Tibiofibular Joint Pain', zh:'遠端脛腓關節壓痛', mode:'sideMulti', outcomes:['positive','negative'] },
         { id:'ant-drawer', en:'Ant Drawer', zh:'前抽屜測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
         { id:'talar-tilt', en:'Talar Tilt', zh:'距骨傾斜測試', mode:'sideMulti', outcomes:['positive','negative','normal'] },
@@ -221,12 +235,12 @@
     ];
 
     const outcomeLabels = {
-      en:{ positive:'+ve', negative:'-ve', normal:'normal', pain:'pain', hypo:'hypo', hyper:'hyper', none:'no pain', 'same-pain':'same-side pain', 'opposite-pain':'opposite-side pain', 'pain-left':'pain on left', 'pain-right':'pain on right', 'radiating-pain':'radiating to lower leg', 'dorsal-pain':'dorsal pain', 'volar-pain':'volar pain', 'radial-pain':'radial pain', 'ulnar-pain':'ulnar pain', 'medial-pain':'medial pain', 'lateral-pain':'lateral pain', 'lateral-tilt':'lateral tilt', 'medial-tilt':'medial tilt', 'convex-right':'convex to right', 'convex-left':'convex to left', 'sp-point-right':'spinous process pointing to right', 'sp-point-left':'spinous process pointing to left', 'spine-distance-inc':'L-spine distance increased', 'spine-distance-dec':'L-spine distance decreased', 'r-longer':'longer R-lower extremity', 'r-shorter':'shorter R-lower extremity', 'l-longer':'longer L-lower extremity', 'l-shorter':'shorter L-lower extremity' },
-      zh:{ positive:'+ve', negative:'-ve', normal:'正常', pain:'痛', hypo:'減弱', hyper:'亢進', none:'無痛', 'same-pain':'同側痛', 'opposite-pain':'對側痛', 'pain-left':'左側痛', 'pain-right':'右側痛', 'radiating-pain':'放射至小腿', 'dorsal-pain':'背側痛', 'volar-pain':'掌側痛', 'radial-pain':'橈側痛', 'ulnar-pain':'尺側痛', 'medial-pain':'內側痛', 'lateral-pain':'外側痛', 'lateral-tilt':'外側傾斜', 'medial-tilt':'內側傾斜', 'convex-right':'向右凸', 'convex-left':'向左凸', 'sp-point-right':'棘突偏右', 'sp-point-left':'棘突偏左', 'spine-distance-inc':'腰椎距離增加', 'spine-distance-dec':'腰椎距離減少', 'r-longer':'右下肢較長', 'r-shorter':'右下肢較短', 'l-longer':'左下肢較長', 'l-shorter':'左下肢較短' }
+      en:{ positive:'+ve', negative:'-ve', normal:'normal', pain:'pain', hypo:'hypo', hyper:'hyper', none:'no pain', 'same-pain':'same-side pain', 'opposite-pain':'opposite-side pain', 'pain-left':'pain on left', 'pain-right':'pain on right', 'radiating-pain':'radiating to lower leg', 'dorsal-pain':'dorsal pain', 'volar-pain':'volar pain', 'radial-pain':'radial pain', 'ulnar-pain':'ulnar pain', 'medial-pain':'medial pain', 'lateral-pain':'lateral pain', 'lateral-tilt':'lateral tilt', 'medial-tilt':'medial tilt', 'convex-right':'convex to right', 'convex-left':'convex to left', 'sp-point-right':'spinous process pointing to right', 'sp-point-left':'spinous process pointing to left', 'r-rotation':'R-rotation', 'l-rotation':'L-rotation', 'spine-distance-inc':'L-spine distance increased', 'spine-distance-dec':'L-spine distance decreased', 'r-longer':'longer R-lower extremity', 'r-shorter':'shorter R-lower extremity', 'l-longer':'longer L-lower extremity', 'l-shorter':'shorter L-lower extremity' },
+      zh:{ positive:'+ve', negative:'-ve', normal:'正常', pain:'痛', hypo:'減弱', hyper:'亢進', none:'無痛', 'same-pain':'同側痛', 'opposite-pain':'對側痛', 'pain-left':'左側痛', 'pain-right':'右側痛', 'radiating-pain':'放射至小腿', 'dorsal-pain':'背側痛', 'volar-pain':'掌側痛', 'radial-pain':'橈側痛', 'ulnar-pain':'尺側痛', 'medial-pain':'內側痛', 'lateral-pain':'外側痛', 'lateral-tilt':'外側傾斜', 'medial-tilt':'內側傾斜', 'convex-right':'向右凸', 'convex-left':'向左凸', 'sp-point-right':'棘突偏右', 'sp-point-left':'棘突偏左', 'r-rotation':'右旋轉', 'l-rotation':'左旋轉', 'spine-distance-inc':'腰椎距離增加', 'spine-distance-dec':'腰椎距離減少', 'r-longer':'右下肢較長', 'r-shorter':'右下肢較短', 'l-longer':'左下肢較長', 'l-shorter':'左下肢較短' }
     };
 
     const uiLabels = {
-      positive:'+ve / 陽性', negative:'-ve / 陰性', normal:'Normal / 正常', pain:'Pain / 痛', hypo:'Hypo / 減弱', hyper:'Hyper / 亢進', none:'No pain / 無痛', 'same-pain':'Same side / 同側痛', 'opposite-pain':'Opp side / 對側痛', 'pain-left':'Pain L / 左側痛', 'pain-right':'Pain R / 右側痛', 'radiating-pain':'Rad to LL / 放射至小腿', 'dorsal-pain':'Dorsal / 背側', 'volar-pain':'Volar / 掌側', 'radial-pain':'Radial / 橈側', 'ulnar-pain':'Ulnar / 尺側', 'medial-pain':'Medial / 內側', 'lateral-pain':'Lateral / 外側', 'lateral-tilt':'Lat tilt / 外傾', 'medial-tilt':'Med tilt / 內傾', 'gen-convex-right':'Gen→R / 整體右凸', 'gen-convex-left':'Gen→L / 整體左凸', 'sup-convex-right':'Sup→R / 上位右凸', 'sup-convex-left':'Sup→L / 上位左凸', 'inf-convex-right':'Inf→R / 下位右凸', 'inf-convex-left':'Inf→L / 下位左凸', 'convex-right':'Conv→R / 向右凸', 'convex-left':'Conv→L / 向左凸', 'sp-point-right':'SP→R / 棘突偏右', 'sp-point-left':'SP→L / 棘突偏左'
+      positive:'+ve / 陽性', negative:'-ve / 陰性', normal:'Normal / 正常', pain:'Pain / 痛', hypo:'Hypo / 減弱', hyper:'Hyper / 亢進', none:'No pain / 無痛', 'same-pain':'Same side / 同側痛', 'opposite-pain':'Opp side / 對側痛', 'pain-left':'Pain L / 左側痛', 'pain-right':'Pain R / 右側痛', 'radiating-pain':'Rad to LL / 放射至小腿', 'dorsal-pain':'Dorsal / 背側', 'volar-pain':'Volar / 掌側', 'radial-pain':'Radial / 橈側', 'ulnar-pain':'Ulnar / 尺側', 'medial-pain':'Medial / 內側', 'lateral-pain':'Lateral / 外側', 'lateral-tilt':'Lat tilt / 外傾', 'medial-tilt':'Med tilt / 內傾', 'gen-convex-right':'Gen→R / 整體右凸', 'gen-convex-left':'Gen→L / 整體左凸', 'sup-convex-right':'Sup→R / 上位右凸', 'sup-convex-left':'Sup→L / 上位左凸', 'inf-convex-right':'Inf→R / 下位右凸', 'inf-convex-left':'Inf→L / 下位左凸', 'convex-right':'Conv→R / 向右凸', 'convex-left':'Conv→L / 向左凸', 'sp-point-right':'SP→R / 棘突偏右', 'sp-point-left':'SP→L / 棘突偏左', 'r-rotation':'R-rot / 右旋轉', 'l-rotation':'L-rot / 左旋轉'
     };
 
     const state = { language:'en', selected:new Map(), romValues:new Map(), theme:'light', suppressTextSync:false };
@@ -253,9 +267,10 @@
     function romKey(regionKey,testId,rowCode){ return regionKey+'::'+testId+'::'+rowCode; }
     function buildToken(regionKey, testId, rowCode, outcome, lang){
       const region=examData.find(r=>r.key===regionKey); const test=region.tests.find(t=>t.id===testId); const label=lang==='en'?test.en:test.zh; const outcomeLabel=getOutcomeLabel(outcome,lang);
-      if(test.mode==='sideMulti') return `${sidePrefix(rowCode)}${label} ${outcomeLabel}`.trim();
-      if(test.mode==='singleMulti') return `${label.replace(' Reflex','').trim()} ${outcomeLabel}`.trim();
-      const item=test.items.find(i=>i.code===rowCode); const itemLabel=lang==='en'?item.en:item.zh; const romSuffix = test.hasRom ? (()=>{ const v=state.romValues.get(romKey(regionKey,testId,rowCode)); return v ? ` (ROM: ${v})` : ''; })() : ''; if(test.id==='mcmurray') return `${label} ${lang==='en'?item.en:item.zh} ${outcomeLabel}`.trim(); if(test.prefix){ const pfx=lang==='en'?test.prefix.en:test.prefix.zh; return `${pfx} ${itemLabel} ${outcomeLabel}${romSuffix}`.trim(); } return `${itemLabel} ${outcomeLabel}${romSuffix}`.trim();
+      const romSuffix = test.hasRom ? (()=>{ const v=state.romValues.get(romKey(regionKey,testId,rowCode)); return v ? ` (ROM: ${v})` : ''; })() : '';
+      if(test.mode==='sideMulti') return `${sidePrefix(rowCode)}${label} ${outcomeLabel}${romSuffix}`.trim();
+      if(test.mode==='singleMulti') return `${label.replace(' Reflex','').trim()} ${outcomeLabel}${romSuffix}`.trim();
+      const item=test.items.find(i=>i.code===rowCode); const itemLabel=lang==='en'?item.en:item.zh; if(test.id==='mcmurray') return `${label} ${lang==='en'?item.en:item.zh} ${outcomeLabel}`.trim(); if(test.prefix){ const pfx=lang==='en'?test.prefix.en:test.prefix.zh; return `${pfx} ${itemLabel} ${outcomeLabel}${romSuffix}`.trim(); } return `${itemLabel} ${outcomeLabel}${romSuffix}`.trim();
     }
 
     function getOrderRank(regionKey, testId, rowCode, outcome){
@@ -291,10 +306,19 @@
         if(!region) return;
         const test=region.tests.find(t=>t.id===testId);
         if(!test||!test.hasRom) return;
-        const item=test.items.find(i=>i.code===rowCode);
-        if(!item) return;
-        const itemLabel=lang==='en'?item.en:item.zh;
-        const token = test.prefix ? `${lang==='en'?test.prefix.en:test.prefix.zh} ${itemLabel} (ROM: ${val})` : `${itemLabel} (ROM: ${val})`;
+        let token;
+        if(test.mode==='itemMulti'){
+          const item=test.items.find(i=>i.code===rowCode);
+          if(!item) return;
+          const itemLabel=lang==='en'?item.en:item.zh;
+          token = test.prefix ? `${lang==='en'?test.prefix.en:test.prefix.zh} ${itemLabel} (ROM: ${val})` : `${itemLabel} (ROM: ${val})`;
+        } else if(test.mode==='sideMulti'){
+          const label=lang==='en'?test.en:test.zh;
+          token = `${sidePrefix(rowCode)}${label} (ROM: ${val})`;
+        } else {
+          const label=lang==='en'?test.en:test.zh;
+          token = `${label} (ROM: ${val})`;
+        }
         entries.push({ rank:getOrderRank(regionKey,testId,rowCode,null), token });
       });
       entries.sort((a,b)=>compareRank(a.rank,b.rank));
@@ -328,9 +352,18 @@
             if(test.mode==='sideMulti' || test.mode==='singleMulti'){
               const labelEn=test.en.toLowerCase(); const labelZh=test.zh.toLowerCase(); const workLower=working.toLowerCase();
               if(workLower.startsWith(labelEn) || working.startsWith(test.zh)){
+                const rowCode=test.mode==='sideMulti'?side:'NA';
                 const remainder=working.slice(workLower.startsWith(labelEn) ? test.en.length : test.zh.length).trim();
-                const foundOutcome=Object.keys(outcomeLabels.en).find(code => remainder.toLowerCase()===outcomeLabels.en[code] || remainder===outcomeLabels.zh[code]);
-                if(foundOutcome){ setChecked(region.key,test.id,test.mode==='sideMulti'?side:'NA',foundOutcome,true); matched++; }
+                const foundOutcome=Object.keys(outcomeLabels.en).find(code => remainder.toLowerCase()===outcomeLabels.en[code].toLowerCase() || remainder===outcomeLabels.zh[code]);
+                const validRomOnly = test.hasRom && romVal && remainder==='' && rowCode!=='NA';
+                if(foundOutcome){ setChecked(region.key,test.id,rowCode,foundOutcome,true); matched++; }
+                else if(validRomOnly){ matched++; }
+                if(test.hasRom && romVal && (foundOutcome||validRomOnly)){
+                  const rk=romKey(region.key,test.id,rowCode);
+                  state.romValues.set(rk,romVal);
+                  const inp=document.querySelector(`.rom-input[data-region="${CSS.escape(region.key)}"][data-test="${CSS.escape(test.id)}"][data-row="${CSS.escape(rowCode)}"]`);
+                  if(inp){inp.value=romVal;inp.classList.toggle('has-value',!!romVal);}
+                }
               }
             }
             if(test.mode==='itemMulti'){
@@ -347,7 +380,7 @@
                   if(!enMatch && !zhMatch) return null;
                   const labelLen=enMatch?item.en.length:item.zh.length;
                   const remainder=workItem.slice(labelLen).trim();
-                  const foundOutcome=Object.keys(outcomeLabels.en).find(code => remainder.toLowerCase()===outcomeLabels.en[code] || remainder===outcomeLabels.zh[code]);
+                  const foundOutcome=Object.keys(outcomeLabels.en).find(code => remainder.toLowerCase()===outcomeLabels.en[code].toLowerCase() || remainder===outcomeLabels.zh[code]);
                   const validRomOnly = test.hasRom && romVal && remainder==='';
                   if(!foundOutcome && !validRomOnly) return null;
                   return {item,foundOutcome,labelLen};
@@ -371,7 +404,7 @@
                     const rest=workItem.startsWith(test.en) ? workItem.slice(test.en.length).trim() : workItem.slice(test.zh.length).trim();
                     if(rest.startsWith(item.en) || rest.startsWith(item.zh)){
                       const remainder=rest.startsWith(item.en) ? rest.slice(item.en.length).trim() : rest.slice(item.zh.length).trim();
-                      const foundOutcome=Object.keys(outcomeLabels.en).find(code => remainder.toLowerCase()===outcomeLabels.en[code] || remainder===outcomeLabels.zh[code]);
+                      const foundOutcome=Object.keys(outcomeLabels.en).find(code => remainder.toLowerCase()===outcomeLabels.en[code].toLowerCase() || remainder===outcomeLabels.zh[code]);
                       if(foundOutcome){ setChecked(region.key,test.id,item.code,foundOutcome,true); matched++; }
                     }
                   }
